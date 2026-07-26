@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #DCE3F0;
+  font-family: 'Inter', sans-serif;
+  color: #14213D;
+}
+
+.card {
+  background: white;
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 2px 14px rgba(20, 33, 61, 0.06);
+}
