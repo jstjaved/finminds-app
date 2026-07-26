@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { fetchQuotes } from "@/lib/finnhub";
+import { formatCoins } from "@/lib/currency";
 import NavBar from "@/components/NavBar";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 
@@ -50,7 +51,7 @@ export default async function MarketPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-mono font-bold text-ink">{price}</div>
+                  <div className="font-mono font-bold text-ink">{formatCoins(price)}</div>
                   <div className={`inline-flex items-center gap-0.5 text-xs font-bold ${up ? "text-tealDeep" : "text-coral"}`}>
                     {up ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}{Math.abs(chg)}%
                   </div>

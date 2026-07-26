@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { fetchQuotes } from "@/lib/finnhub";
+import { formatCoins } from "@/lib/currency";
 import NavBar from "@/components/NavBar";
-import { Play, TrendingUp, Award, Wallet } from "lucide-react";
+import { Play, TrendingUp, Award, Wallet, Gift } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
+
+  // Daily sign-in bonus: server-enforced, pays out at most once per calendar day (IST).
+  const { data: dailyBonusGranted } = await supabase.rpc("claim_daily_bonus");
 
   const [{ data: profile }, { data: classes }, { data: completions }, { data: holdings }, { data: companies }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user!.id).single(),
@@ -53,16 +57,22 @@ export default async function Dashboard() {
         <div className="flex gap-2.5 mt-4">
           <div className="flex-1 bg-white/10 rounded-2xl p-3">
             <div className="flex items-center gap-1.5 text-xs opacity-75"><Wallet size={13} /> Wallet</div>
-            <div className="font-mono text-lg font-bold mt-0.5">{profile!.wallet}</div>
+            <div className="font-mono text-lg font-bold mt-0.5">{formatCoins(profile!.wallet)}</div>
           </div>
           <div className="flex-1 bg-white/10 rounded-2xl p-3">
             <div className="flex items-center gap-1.5 text-xs opacity-75"><TrendingUp size={13} /> Portfolio</div>
-            <div className="font-mono text-lg font-bold mt-0.5">{portfolioValue.toFixed(0)}</div>
+            <div className="font-mono text-lg font-bold mt-0.5">{formatCoins(portfolioValue)}</div>
           </div>
         </div>
       </div>
 
       <div className="px-4.5 px-[18px] mt-4 space-y-3.5">
+        {dailyBonusGranted && (
+          <div className="rounded-2xl px-3.5 py-3 flex items-center gap-2.5" style={{ background: "#FFF6E5", border: "1px solid #FFE1A8" }}>
+            <Gift size={18} className="text-gold" />
+            <div className="text-sm text-ink"><b>+₹500</b> daily sign-in bonus added to your wallet!</div>
+          </div>
+        )}
         {/* Portfolio summary card */}
         <div className="card">
           <div className="text-sm font-bold text-ink mb-2">Portfolio summary</div>
@@ -73,11 +83,11 @@ export default async function Dashboard() {
             </div>
             <div>
               <div className="text-[11px] text-slate">Value</div>
-              <div className="font-mono font-bold text-ink">{portfolioValue.toFixed(0)}</div>
+              <div className="font-mono font-bold text-ink">{formatCoins(portfolioValue)}</div>
             </div>
             <div>
               <div className="text-[11px] text-slate">P/L</div>
-              <div className={`font-mono font-bold ${todayPL >= 0 ? "text-tealDeep" : "text-coral"}`}>{todayPL >= 0 ? "+" : ""}{todayPL.toFixed(0)}</div>
+              <div className={`font-mono font-bold ${todayPL >= 0 ? "text-tealDeep" : "text-coral"}`}>{todayPL >= 0 ? "+" : ""}{formatCoins(todayPL)}</div>
             </div>
           </div>
           {(!holdings || holdings.length === 0) && (
@@ -91,7 +101,7 @@ export default async function Dashboard() {
             <div className="flex justify-between items-center mt-1.5">
               <div>
                 <div className="font-display text-lg">{nextClass.title}</div>
-                <div className="text-xs opacity-85 mt-0.5">+{nextClass.reward_coins} coins</div>
+                <div className="text-xs opacity-85 mt-0.5">+{formatCoins(nextClass.reward_coins)}</div>
               </div>
               <div className="bg-white rounded-full w-10 h-10 grid place-items-center">
                 <Play size={16} className="text-tealDeep" fill="#1F9E92" />

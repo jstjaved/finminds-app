@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CheckCircle2, XCircle, Coins } from "lucide-react";
 import type { QuizQuestion } from "@/lib/types";
+import { formatCoins } from "@/lib/currency";
 
 export default function ClassQuiz({
   classId, questions, reward, isMilestone, alreadyDone,
@@ -45,7 +46,7 @@ export default function ClassQuiz({
           <div className="text-xs text-slate font-semibold">YOU EARNED</div>
           <div className="flex items-center gap-2 justify-center mt-1">
             <Coins className="text-gold" size={24} />
-            <span className="font-mono text-2xl font-bold text-ink">+{reward}</span>
+            <span className="font-mono text-2xl font-bold text-ink">+{formatCoins(reward)}</span>
           </div>
         </div>
         <button

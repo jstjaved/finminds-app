@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { fetchQuotes } from "@/lib/finnhub";
+import { formatCoins } from "@/lib/currency";
 import NavBar from "@/components/NavBar";
 
 export const dynamic = "force-dynamic";
@@ -37,9 +38,9 @@ export default async function PortfolioPage() {
       </div>
       <div className="px-[18px]">
         <div className="flex gap-2.5">
-          <div className="card flex-1"><div className="text-[11px] text-slate">Total value</div><div className="font-mono font-bold text-ink">{portfolioValue.toFixed(0)}</div></div>
-          <div className="card flex-1"><div className="text-[11px] text-slate">Overall P/L</div><div className={`font-mono font-bold ${totalPL >= 0 ? "text-tealDeep" : "text-coral"}`}>{totalPL >= 0 ? "+" : ""}{totalPL.toFixed(0)}</div></div>
-          <div className="card flex-1"><div className="text-[11px] text-slate">Cash</div><div className="font-mono font-bold text-ink">{profile!.wallet}</div></div>
+          <div className="card flex-1"><div className="text-[11px] text-slate">Total value</div><div className="font-mono font-bold text-ink">{formatCoins(portfolioValue)}</div></div>
+          <div className="card flex-1"><div className="text-[11px] text-slate">Overall P/L</div><div className={`font-mono font-bold ${totalPL >= 0 ? "text-tealDeep" : "text-coral"}`}>{totalPL >= 0 ? "+" : ""}{formatCoins(totalPL)}</div></div>
+          <div className="card flex-1"><div className="text-[11px] text-slate">Cash</div><div className="font-mono font-bold text-ink">{formatCoins(profile!.wallet)}</div></div>
         </div>
 
         {rows.length === 0 ? (
@@ -56,12 +57,12 @@ export default async function PortfolioPage() {
                   <div className="text-xl">{r.co.logo}</div>
                   <div>
                     <div className="text-sm font-bold text-ink">{r.co.name}</div>
-                    <div className="text-[11px] text-slate">{r.qty} shares · avg {r.avg_price.toFixed(0)}</div>
+                    <div className="text-[11px] text-slate">{r.qty} shares · avg {formatCoins(r.avg_price)}</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-mono font-bold text-ink">{r.value.toFixed(0)}</div>
-                  <div className={`text-[11px] font-bold ${r.pl >= 0 ? "text-tealDeep" : "text-coral"}`}>{r.pl >= 0 ? "+" : ""}{r.pl.toFixed(0)} ({r.plPct.toFixed(1)}%)</div>
+                  <div className="font-mono font-bold text-ink">{formatCoins(r.value)}</div>
+                  <div className={`text-[11px] font-bold ${r.pl >= 0 ? "text-tealDeep" : "text-coral"}`}>{r.pl >= 0 ? "+" : ""}{formatCoins(r.pl)} ({r.plPct.toFixed(1)}%)</div>
                 </div>
               </div>
             ))}
@@ -72,7 +73,7 @@ export default async function PortfolioPage() {
               return (
                 <div key={t.id} className="flex justify-between text-xs text-slate py-1.5 border-b border-line">
                   <span>{co.logo} Bought {t.qty} {co.name}</span>
-                  <span className="font-mono">-{(t.qty * t.price).toFixed(0)}</span>
+                  <span className="font-mono">-{formatCoins(t.qty * t.price)}</span>
                 </div>
               );
             })}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { formatCoins } from "@/lib/currency";
 import NavBar from "@/components/NavBar";
 import { Check, Lock, Play, Sparkles } from "lucide-react";
 
@@ -47,7 +48,7 @@ export default async function LearnPage() {
               <div className="card py-2.5 px-3.5">
                 <div className="text-sm font-bold text-ink font-display">{c.title}</div>
                 <div className="text-[11px] text-slate mt-0.5 flex items-center gap-1.5">
-                  +{c.reward_coins} coins {c.is_milestone && <Sparkles size={11} className="text-gold" />}
+                  +{formatCoins(c.reward_coins)} {c.is_milestone && <Sparkles size={11} className="text-gold" />}
                 </div>
               </div>
             </Link>

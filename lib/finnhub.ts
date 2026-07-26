@@ -1,3 +1,5 @@
+import { USD_TO_INR } from "@/lib/currency";
+
 export type FinnhubQuote = { price: number; chg: number };
 
 export async function fetchQuotes(tickers: string[]): Promise<{ quotes: Record<string, FinnhubQuote>; errors: string[] }> {
@@ -12,7 +14,9 @@ export async function fetchQuotes(tickers: string[]): Promise<{ quotes: Record<s
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (typeof data.c === "number" && data.c > 0) {
-        quotes[ticker] = { price: Math.round(data.c * 100) / 100, chg: Math.round((data.dp || 0) * 100) / 100 };
+        // Finnhub returns USD; convert to INR so coins stay 1:1 with Rupees
+        // across both live (US) and simulated (India) companies.
+        quotes[ticker] = { price: Math.round(data.c * USD_TO_INR * 100) / 100, chg: Math.round((data.dp || 0) * 100) / 100 };
       } else {
         errors.push(ticker);
       }

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { formatCoins } from "@/lib/currency";
 import NavBar from "@/components/NavBar";
 import ProfileEditor from "@/components/ProfileEditor";
 import LogoutButton from "@/components/LogoutButton";
@@ -44,7 +45,7 @@ export default async function ProfilePage() {
         <div className="text-sm font-bold text-ink mt-2 mb-1.5">Stats</div>
         <div className="card divide-y divide-line">
           <div className="flex justify-between text-sm py-2"><span className="text-slate">Lessons completed</span><span className="font-mono font-bold text-ink">{(completions || []).length}/{classes?.length || 0}</span></div>
-          <div className="flex justify-between text-sm py-2"><span className="text-slate">Coins in wallet</span><span className="font-mono font-bold text-ink">{profile!.wallet}</span></div>
+          <div className="flex justify-between text-sm py-2"><span className="text-slate">Coins in wallet</span><span className="font-mono font-bold text-ink">{formatCoins(profile!.wallet)}</span></div>
           <div className="flex justify-between text-sm py-2"><span className="text-slate">Companies owned</span><span className="font-mono font-bold text-ink">{(holdings || []).length}</span></div>
         </div>
 

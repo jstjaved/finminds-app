@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { formatCoins } from "@/lib/currency";
 
 export default function BuyForm({ companyId, price, wallet }: { companyId: string; price: number; wallet: number }) {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function BuyForm({ companyId, price, wallet }: { companyId: strin
       </div>
       <div className="card bg-cloud shadow-none mt-5 flex justify-between text-sm">
         <span className="text-slate">Estimated cost</span>
-        <span className={`font-mono font-bold ${canAfford ? "text-ink" : "text-coral"}`}>{cost} coins</span>
+        <span className={`font-mono font-bold ${canAfford ? "text-ink" : "text-coral"}`}>{formatCoins(cost)}</span>
       </div>
       {!canAfford && <div className="text-coral text-xs text-center mt-2">Not enough coins — finish a lesson to earn more!</div>}
       {error && <div className="text-coral text-xs text-center mt-2">{error}</div>}

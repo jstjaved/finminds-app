@@ -5,6 +5,7 @@ export type Profile = {
   grade_id: number | null;
   wallet: number;
   investor_xp: number;
+  last_daily_bonus_date?: string | null;
 };
 
 export type ClassRow = {
@@ -17,6 +18,9 @@ export type ClassRow = {
   takeaways: string[];
   reward_coins: number;
   is_milestone: boolean;
+  exercise_prompt?: string | null;
+  exercise_options?: string[] | null;
+  exercise_correct_index?: number | null;
 };
 
 export type QuizQuestion = {
@@ -40,6 +44,10 @@ export type Company = {
   real_ticker: string | null;
   story: string;
   products: string[];
+  founded_year?: number | null;
+  headquarters?: string | null;
+  fun_fact?: string | null;
+  industry_description?: string | null;
 };
 
 export type Holding = {
