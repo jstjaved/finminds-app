@@ -1,17 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  background: #DCE3F0;
+  background: #FCF8F6;
   font-family: 'Inter', sans-serif;
   color: #14213D;
 }
 
 .card {
   background: white;
-  border-radius: 22px;
-  padding: 16px;
-  box-shadow: 0 2px 14px rgba(20, 33, 61, 0.06);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(20, 33, 61, 0.05);
+  border: 1px solid #EAE6E2;
+}
+
+.blob-bg {
+  background:
+    radial-gradient(600px 300px at 10% -10%, rgba(15,157,140,0.10), transparent),
+    radial-gradient(500px 260px at 95% 0%, rgba(242,169,59,0.14), transparent);
 }

@@ -48,6 +48,13 @@ export type Company = {
   headquarters?: string | null;
   fun_fact?: string | null;
   industry_description?: string | null;
+  ceo?: string | null;
+  revenue_model?: string | null;
+  pe_ratio?: number | null;
+  pb_ratio?: number | null;
+  roce?: number | null;
+  dividend_yield?: number | null;
+  market_cap_cr?: number | null;
 };
 
 export type Holding = {

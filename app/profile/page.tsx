@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatCoins } from "@/lib/currency";
-import NavBar from "@/components/NavBar";
+import TopNav from "@/components/TopNav";
 import ProfileEditor from "@/components/ProfileEditor";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -15,43 +15,37 @@ export default async function ProfilePage() {
     supabase.from("holdings").select("company_id").eq("profile_id", user!.id),
     supabase.from("classes").select("id"),
   ]);
+  const { data: grade } = profile?.grade_id
+    ? await supabase.from("grades").select("name").eq("id", profile.grade_id).single()
+    : { data: null as { name: string } | null };
 
   const lvl = profile!.investor_xp >= 60 ? "Growth Investor" : profile!.investor_xp >= 25 ? "Curious Investor" : "New Investor";
-  const badges = [
-    { name: "First Lesson", earned: (completions || []).length >= 1, icon: "📘" },
-    { name: "Share Scholar", earned: (completions || []).some((c) => c.class_id === 4), icon: "🎓" },
-    { name: "First Investment", earned: (holdings || []).length > 0, icon: "🌱" },
-  ];
 
   return (
-    <div className="h-full min-h-screen pb-24">
-      <div className="px-[18px] pt-[18px] pb-2.5">
-        <h1 className="font-display text-xl text-ink">Profile</h1>
-      </div>
-      <div className="px-[18px] space-y-3.5">
-        <ProfileEditor id={profile!.id} name={profile!.name} avatar={profile!.avatar} />
-        <div className="text-center text-xs text-slate">{lvl} · {profile!.investor_xp} XP</div>
+    <div className="min-h-screen">
+      <TopNav />
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        <h1 className="font-display font-extrabold text-2xl text-ink mb-6">Profile</h1>
 
-        <div className="text-sm font-bold text-ink mt-2 mb-1.5">Badges</div>
-        <div className="grid grid-cols-3 gap-2.5">
-          {badges.map((b) => (
-            <div key={b.name} className={`card text-center ${b.earned ? "" : "opacity-40"}`}>
-              <div className="text-2xl">{b.icon}</div>
-              <div className="text-[11px] font-semibold text-ink mt-1">{b.name}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <ProfileEditor id={profile!.id} name={profile!.name} avatar={profile!.avatar} />
+
+          <div className="card">
+            <div className="font-display font-bold text-ink mb-3">Stats</div>
+            <div className="divide-y divide-line">
+              <div className="flex justify-between text-sm py-2"><span className="text-slate">Grade</span><span className="font-semibold text-ink">{grade?.name || "—"}</span></div>
+              <div className="flex justify-between text-sm py-2"><span className="text-slate">Investor level</span><span className="font-semibold text-ink">{lvl}</span></div>
+              <div className="flex justify-between text-sm py-2"><span className="text-slate">Classes completed</span><span className="font-mono font-bold text-ink">{(completions || []).length}/{classes?.length || 0}</span></div>
+              <div className="flex justify-between text-sm py-2"><span className="text-slate">Coins in wallet</span><span className="font-mono font-bold text-ink">{formatCoins(profile!.wallet)}</span></div>
+              <div className="flex justify-between text-sm py-2"><span className="text-slate">Companies owned</span><span className="font-mono font-bold text-ink">{(holdings || []).length}</span></div>
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="text-sm font-bold text-ink mt-2 mb-1.5">Stats</div>
-        <div className="card divide-y divide-line">
-          <div className="flex justify-between text-sm py-2"><span className="text-slate">Lessons completed</span><span className="font-mono font-bold text-ink">{(completions || []).length}/{classes?.length || 0}</span></div>
-          <div className="flex justify-between text-sm py-2"><span className="text-slate">Coins in wallet</span><span className="font-mono font-bold text-ink">{formatCoins(profile!.wallet)}</span></div>
-          <div className="flex justify-between text-sm py-2"><span className="text-slate">Companies owned</span><span className="font-mono font-bold text-ink">{(holdings || []).length}</span></div>
+        <div className="max-w-xs mt-5">
+          <LogoutButton />
         </div>
-
-        <LogoutButton />
       </div>
-      <NavBar />
     </div>
   );
 }

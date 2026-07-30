@@ -6,16 +6,18 @@ const config: Config = {
     extend: {
       colors: {
         ink: "#14213D",
+        cream: "#FCF8F6",
         cloud: "#F7F9FC",
-        teal: "#2EC4B6",
-        tealDeep: "#1F9E92",
-        gold: "#FFB627",
+        teal: "#0F9D8C",
+        tealDeep: "#0B7A6C",
+        gold: "#F2A93B",
         coral: "#FF6B6B",
         slate: "#5C6784",
-        line: "#E7EAF3",
+        line: "#EAE6E2",
+        panel: "#0F1522",
       },
       fontFamily: {
-        display: ["Baloo 2", "sans-serif"],
+        display: ["Manrope", "sans-serif"],
         body: ["Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
       },
