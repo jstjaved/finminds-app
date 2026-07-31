@@ -1,0 +1,10 @@
+{
+  "name": "FinMinds",
+  "short_name": "FinMinds",
+  "description": "Learn financial literacy, earn coins, invest in a safe simulator.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#FCF8F6",
+  "theme_color": "#0F9D8C",
+  "icons": []
+}
